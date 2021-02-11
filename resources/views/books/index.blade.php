@@ -44,6 +44,9 @@
                     @endforeach
                 </table>
                 {{-- <x-jet-welcome /> --}}
+                <footer class="card-footer">
+                    {{ $books->links() }}
+                </footer>
             </div>
         </div>
     </div>

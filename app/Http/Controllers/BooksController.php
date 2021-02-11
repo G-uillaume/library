@@ -17,7 +17,12 @@ class BooksController extends Controller
      */
     public function index()
     {
-        $books = Book::all()->sortBy('title');
+        $books = Book::paginate(20);
+        $books->setCollection(
+            $books->sortBy(function ($book) {
+                return $book->title;
+            })
+        );
         return view('books.index', ['books' => $books]);
     }
 
