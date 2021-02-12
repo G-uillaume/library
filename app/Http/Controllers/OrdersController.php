@@ -27,26 +27,11 @@ class OrdersController extends Controller
      * Show the form for creating a new resource.
      *
      * @param \Illuminate\Http\Request  $request
-     * @param \App\Models\Book $book
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request,Book $book)
+    public function create(Request $request)
     {
-        // $books = Book::all();
-        // $order = new Order();
-        // $order->user_id = $request->user()->id;
-        // // $order->user_id = 7;
-        // $order->save();
-    
-        // $books_ids = [$request];
-        // // $books_ids = 3;
-        // $order->books()->attach($books_ids);
-        // return "youpi";
-        // return explode(',', $book); 
-        // $book = explode(':', explode(',', $book)[0])[1];
-        // $book = explode(',', $book);
-        // return view('test2', ['book' => $book]);
-        // return $book;
+        //
     }
 
     /**
@@ -104,5 +89,17 @@ class OrdersController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function newOrder(Request $request, $id) {
+        $order = new Order();
+        $order->user_id = $request->user()->id;
+        $order->save();
+        // $books_ids = $book;
+        $order->books()->attach($id);
+        // Order::create([
+        //     'user_id' => $request->user()->id,
+        // ])->books()->attach($id);
+        return redirect()->route('orders.show', $request->user()->id);
     }
 }
