@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\BookOrder;
 
-class BooksInOrderController extends Controller
+class BookOrderController extends Controller
 {
     /**
      * Display a listing of the resource.

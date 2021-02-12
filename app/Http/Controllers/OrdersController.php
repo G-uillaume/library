@@ -80,7 +80,7 @@ class OrdersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         if ($request->user()->role == 'user') {
             $books = Book::all()->sortBy('title');
@@ -98,9 +98,10 @@ class OrdersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Order $order)
     {
-        //
+        $order->books()->sync($request->books);
+        return redirect()->route('orders.show', $request->user()->id);
     }
 
     /**
@@ -109,11 +110,11 @@ class OrdersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(Request $request, Order $order)
     {
         
         $order->delete($order);
-        return redirect()->route('orders.show');
+        return redirect()->route('orders.show', $request->user()->id);
         // return $order;
     }
 }

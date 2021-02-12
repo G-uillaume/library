@@ -23,10 +23,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/neworder/{id}', [OrdersController::class, 'newOrder'])->name('neworder');
 Route::resource('/books', BooksController::class);
-// Route::get('orders.show', [OrdersController::class, 'show'])->name('orders.show');
-// Route::get('orders.neworder', [OrdersController::class, 'neworder'])->name('orders.neworder');
 Route::resource('/orders', OrdersController::class);
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
