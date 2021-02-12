@@ -12,9 +12,16 @@
                 <h3 class="text-2xl m-6">Order n°{{ $order->id }}, {{ $order->user->name }} :  </h3>
                 @foreach($order->books as $book)
                 <ul class="m-2">
-                    <li>{{ implode(' ', (array_reverse(explode(', ',$book->title)))) }} ({{ implode(' ', (array_reverse(explode(', ',$book->author)))) }})</li>
+                    <li>{{ $book->id }} : {{ implode(' ', (array_reverse(explode(', ',$book->title)))) }} ({{ implode(' ', (array_reverse(explode(', ',$book->author)))) }})</li>
                 </ul>
                 @endforeach
+                <a href="{{ route('orders.edit', $order) }}">Edit order</a>
+                <a href="{{ route('orders.destroy', $order) }}" onclick="event.preventDefault(); getElementById('deleteOrder').submit();">Delete order</a>
+                <form id="deleteOrder" action="{{ route('orders.destroy', $order) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    {{-- <input type="submit" value="Delete"> --}}
+                </form>
                 @endforeach
                 {{-- <x-jet-welcome /> --}}
             </div>

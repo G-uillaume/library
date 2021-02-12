@@ -16,17 +16,12 @@
                     </tr>
                     @foreach($books as $book)
                     <tr class="border-2">
-                        <td class="border-2 py-4 px-6">{{ $book->title }}</td>
-                        <td class="border-2 py-4 px-6">{{ $book->author }}</td>
-                        <td class="border-2 py-4 px-6">{{ $book->genre }}</td>
+                        <td class="border-2 py-4 px-6">{{ implode(' ', array_reverse(explode(', ', $book->title))) }}</td>
+                        <td class="border-2 py-4 px-6">{{ implode(' ', array_reverse(explode(', ', $book->author))) }}</td>
+                        <td class="border-2 py-4 px-6">{{ str_replace('_', ' ', $book->genre) }}</td>
                         <td class="border-2 py-4 px-6">
                             <a href="{{ route('books.show', $book) }}">Show details</a>
                         </td>
-                        @if(Auth::user()->role == 'user')
-                        <td class="border-2 py-4 px-6">
-                            <a href="{{ route('neworder', $book->id) }}">Order book</a>
-                        </td>
-                        @endif
                         @if (Auth::user()->role == 'admin')
                         <td class="border-2 py-4 px-6">
                             <a href="{{ route('books.edit', $book) }}">Edit</a>

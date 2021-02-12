@@ -22,10 +22,16 @@
                     <x-jet-nav-link href="{{ route('books.create') }}" :active="request()->routeIs('books.create')">
                         {{ __('Add a book') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('orders.show', Auth::user()->id) }}" :active="request()->routeIs('orders.show')">
+                        {{ __('All orders') }}
+                    </x-jet-nav-link>
                     @endif
                     @if (Auth::user()->role == 'user')
                     <x-jet-nav-link href="{{ route('orders.show', Auth::user()->id) }}" :active="request()->routeIs('orders.show')">
                         {{ __('My orders') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('orders.create') }}" :active="request()->routeIs('orders.create')">
+                        {{ __('Make an order') }}
                     </x-jet-nav-link>
                     @endif
                 </div>

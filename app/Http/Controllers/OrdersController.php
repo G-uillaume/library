@@ -20,7 +20,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        return $book;
+        //
     }
 
     /**
@@ -31,7 +31,12 @@ class OrdersController extends Controller
      */
     public function create(Request $request)
     {
-        //
+        if ($request->user()->role == 'user') {
+            $books = Book::all()->sortBy('title');
+            return view('orders.create', ['books' => $books]);
+        } else {
+            return view('notAdmin');
+        }
     }
 
     /**
@@ -42,7 +47,15 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->user()->role == 'user') {
+            $order = new Order;
+            $order->user_id = $request->user()->id;
+            $order->save();
+            $order->books()->attach($request->books);
+            return redirect()->route('orders.show', $request->user()->id);
+        } else {
+            return view('notAdmin');
+        }
     }
 
     /**
@@ -52,8 +65,12 @@ class OrdersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
-    {
-        $orders = Order::where('user_id', $request->user()->id)->get();
+    {   
+        if ($request->user()->role == 'user') {
+            $orders = Order::where('user_id', $request->user()->id)->get();
+        } else {
+            $orders = Order::all();
+        }
         return view('orders.show', ['orders' => $orders]);
     }
 
@@ -65,7 +82,13 @@ class OrdersController extends Controller
      */
     public function edit($id)
     {
-        //
+        if ($request->user()->role == 'user') {
+            $books = Book::all()->sortBy('title');
+            $order = Order::find($id);
+            return view('orders.edit', ['order' => $order, 'books' => $books]);
+        } else {
+            return view('notAdmin');
+        }
     }
 
     /**
@@ -86,20 +109,11 @@ class OrdersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Order $order)
     {
-        //
-    }
-
-    public function newOrder(Request $request, $id) {
-        $order = new Order();
-        $order->user_id = $request->user()->id;
-        $order->save();
-        // $books_ids = $book;
-        $order->books()->attach($id);
-        // Order::create([
-        //     'user_id' => $request->user()->id,
-        // ])->books()->attach($id);
-        return redirect()->route('orders.show', $request->user()->id);
+        
+        $order->delete($order);
+        return redirect()->route('orders.show');
+        // return $order;
     }
 }
